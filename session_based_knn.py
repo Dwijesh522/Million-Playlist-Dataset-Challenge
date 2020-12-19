@@ -3,9 +3,9 @@ This file implements session-based nearest neighbor
 algorithm.
 command line args: 
     <training_directory_path>   : this directory must contain mpd.slice.*.json files
-    invidx.json                 : {track_uri: {pid: freq}}  // must be in pwd
-    modifications.json          : {pid: last_modified}      // must be in pwd
-    challenge_set_filtered.npy  : {pid: numpy.ndarray(track_uri)} // must be in pwd
+    invidx.json                 : {track_uri: {pid: freq}}          // must be in pwd
+    modifications.json          : numpy.ndarray(last_modified)      // must be in pwd
+    challenge_set_filtered.npy  : {pid: numpy.ndarray(track_uri)}   // must be in pwd
 """
 
 import sys
@@ -50,7 +50,8 @@ if __name__ == "__main__":
     print("Loading inverted index to memory...")
     invidx = fetchDict(invidx_filename)
     print(len(invidx))
+
     # modifications
     print("Loading modifications to memory...")
-    modifications = fetchDict(modification_filename)
+    modifications = loadFromNpy(modification_filename)
     print(len(modifications))
