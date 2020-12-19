@@ -31,9 +31,7 @@ def fetchDict(filename):
     return data
 
 def loadFromNpy(filename):
-    """ returns the dictionary: {pid : numpy.ndarray(track_uri)}
-        numpy array data type is chosen for memory efficiency.
-    """
+    """numpy array data type is chosen for memory efficiency."""
     return np.load(filename, allow_pickle = True)[()]
 
 def dumpTopM(invidx, modifications, challenge_set):
