@@ -47,25 +47,25 @@ for path in glob.glob(os.path.join(DATA_DIR, "*.json")):
     del df['t_name']
     df.reset_index()
 
-    a = df['p_num'].value_counts()
-    df_1 = pd.DataFrame()
-    df_1['p_num'] = a.index
-    df_1['count'] = a.values
+    df.to_csv(os.path.join(CSV_DIR, "all_files_converted.csv"), mode='a', index=False)
 
-    for index, rows in tqdm(df_1.iterrows()):
-        # rows['p_name'] and rows['count'] gives the playlist name and count of tracks under that.
-        count = int(rows['count'])
-        p_num = rows['p_num']
+a = df['p_num'].value_counts()
+df_1 = pd.DataFrame()
+df_1['p_num'] = a.index
+df_1['count'] = a.values
 
-        to_merge = df[df['p_num'] != p_num].sample(count).copy(deep=True)
-        neg_samples = (list(to_merge['t_num']))
-        for i in neg_samples:
-            df.loc[-1] = [0, p_num, i]
-            df.index = df.index + 1
+for index, rows in tqdm(df_1.iterrows()):
+    # rows['p_name'] and rows['count'] gives the playlist name and count of tracks under that.
+    count = int(rows['count'])
+    p_num = rows['p_num']
 
-    file = os.path.basename(path)[:-5]
-    df.to_csv(os.path.join(CSV_DIR, file + ".converted.csv"), index=False)
-    df = df[['p_num', 't_num', 'rating']]
-    df.columns = ['userId', 'movieId', 'rating']
+    to_merge = df[df['p_num'] != p_num].sample(count).copy(deep=True)
+    neg_samples = (list(to_merge['t_num']))
+    for i in neg_samples:
+        df.loc[-1] = [0, p_num, i]
+        df.index = df.index + 1
 
-    train()
+df = df[['p_num', 't_num', 'rating']]
+df.columns = ['userId', 'movieId', 'rating']
+
+train()
