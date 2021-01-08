@@ -40,6 +40,7 @@ def dumpPlaylists(playlists):
             i += 1
 
         ps[pid] = track_arr
+    print(len(ps))
     dumpToNpy(ps, "challenge_set_filtered.npy")
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@ def dumpToJson(dt, filename):
 def dumpRanking(similarity, challenge_set, pid_vectors_path):
     scores = {qpid : {} for qpid in similarity}
     # bringing all 1000 slices to memory is not possible
-    iterations = 100 # so bring slices in this many iterations
+    iterations = 100 # bring slices in this many iterations
     slices_per_iteration = 1000//iterations
     for i in range(iterations):
         print("iteration:", i, "running...")
@@ -61,17 +61,16 @@ def dumpRanking(similarity, challenge_set, pid_vectors_path):
             # collecting valid tracks
             eligible_track_uris = set()
             neighbor_pids = list(similarity[qpid].keys())
-            for neighbor_pid in neighbor_pids: # type(neighbor_pid) = str
+            # not all playlists from neighbor_pids lie
+            # between start and end
+            eligible_pids = [p for p in neighbor_pids if ((int(p)//1000 >= start) and (int(p)//1000 < end))]
+
+            for neighbor_pid in eligible_pids: # type(neighbor_pid) = str
                 neighbor_pid_index = int(neighbor_pid)//1000
-                if (neighbor_pid_index < start) or (neighbor_pid_index >= end): continue
                 eligible_track_uris.update(list(slices[neighbor_pid_index-start][neighbor_pid].keys()))
             qtrack_uris = set(challenge_set[int(qpid)])
             eligible_track_uris -= qtrack_uris
 
-            # not all playlists from neighbor_pids lie
-            # between start and end
-            eligible_pids = [p for p in neighbor_pids if ((int(p)//1000 >= start) and (int(p)//1000 < end))]
-            
             for eligible_track_uri in eligible_track_uris:
                 if not eligible_track_uri in scores[qpid]:
                     scores[qpid][eligible_track_uri] = 0.0 

@@ -18,7 +18,7 @@ import json
 import numpy as np
 
 # hyper parameter
-M = 2000
+M = 4000
 
 def error(args):
     if (len(args) != 4):
@@ -37,8 +37,10 @@ def loadFromNpy(filename):
 def dumpTopM(invidx, modifications, challenge_set):
     topm = {}
     # playlists of challenge set
+    qpid_count = 1
     for qpid in challenge_set:
-        print(qpid)
+        print(qpid_count, 'the qpid processing...')
+        qpid_count += 1
         qtracks = challenge_set[qpid]
         # set of playlist having atleast one 
         #track in common with query playlist

@@ -25,7 +25,7 @@ import math
 
 TOTAL_DOCS = 1000000
 """ Hyper parameter """
-S = 50 # used for smoothing in term freq
+S = 10 # used for smoothing in term freq
 
 def error(args):
     if (len(args) != 5):
@@ -119,7 +119,6 @@ if __name__ == "__main__":
     print("read datastructures to the memory...")
     topm_pids = getSet(topm) # int pids
     del topm
-    print(topm_pids)
     print(len(topm_pids), " pids needs to be vectorized...")
 
     dumpPidVector(slices_path, topm_pids, invidx, tracks_per_pid)
